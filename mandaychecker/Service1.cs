@@ -19,6 +19,8 @@ namespace mandaychecker
 
         EventLog eventLog = new EventLog();
 
+        DateTime startdate;
+
         protected override void OnStart(string[] args)
         {
             if (!EventLog.SourceExists("MandayChecker"))
@@ -28,6 +30,7 @@ namespace mandaychecker
             eventLog.Source = "MandayChecker";
             eventLog.Log = "MandayChecker";
 
+            startdate = DateTime.Now;
             eventLog.WriteEntry("作業を開始しました");
         }
 
@@ -38,8 +41,7 @@ namespace mandaychecker
 
         protected override void OnShutdown()
         {
-            eventLog.WriteEntry("シャッドダウンしました");
-
+            eventLog.WriteEntry("シャッドダウンで作業終了しました " +(startdate- DateTime.Now).TotalHours+ "人時");
         }
 
         protected override bool OnPowerEvent(PowerBroadcastStatus powerStatus)
