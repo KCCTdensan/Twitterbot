@@ -17,57 +17,34 @@ namespace mandaychecker
             InitializeComponent();
         }
 
+        EventLog eventLog = new EventLog();
+
         protected override void OnStart(string[] args)
         {
-            this.AutoLog = false;
-            if (!EventLog.SourceExists("MySource"))
+            if (!EventLog.SourceExists("MandayChecker"))
             {
-                EventLog.CreateEventSource( "MySource", "MyLog");
+                EventLog.CreateEventSource("MandayChecker", "MandayChecker");
             }
-            EventLog eventLog1 = new EventLog();
-            eventLog1.Source = "MySource";
-            eventLog1.Log = "MyLog";
-            eventLog1.WriteEntry("OnStart");
+            eventLog.Source = "MandayChecker";
+            eventLog.Log = "MandayChecker";
+
+            eventLog.WriteEntry("作業を開始しました");
         }
 
         protected override void OnStop()
         {
-            this.AutoLog = false;
-            if (!EventLog.SourceExists("MySource"))
-            {
-                EventLog.CreateEventSource( "MySource", "MyLog");
-            }
-            EventLog eventLog1 = new EventLog();
-            eventLog1.Source = "MySource";
-            eventLog1.Log = "MyLog";
-            eventLog1.WriteEntry("OnStop");
+            eventLog.WriteEntry("サービスを停止しました");
         }
 
         protected override void OnShutdown()
         {
-            this.AutoLog = false;
-            if (!EventLog.SourceExists("MySource"))
-            {
-                EventLog.CreateEventSource( "MySource", "MyLog");
-            }
-            EventLog eventLog1 = new EventLog();
-            eventLog1.Source = "MySource";
-            eventLog1.Log = "MyLog";
-            eventLog1.WriteEntry("OnShutdown");
+            eventLog.WriteEntry("シャッドダウンしました");
 
         }
 
         protected override bool OnPowerEvent(PowerBroadcastStatus powerStatus)
         {
-            this.AutoLog = false;
-            if (!EventLog.SourceExists("MySource"))
-            {
-                EventLog.CreateEventSource( "MySource", "MyLog");
-            }
-            EventLog eventLog1 = new EventLog();
-            eventLog1.Source = "MySource";
-            eventLog1.Log = "MyLog";
-            eventLog1.WriteEntry(powerStatus.ToString());
+            eventLog.WriteEntry(powerStatus.ToString()  + "しました");
             return true;
         }
     }

@@ -31,6 +31,7 @@
             // 
             // mandaychecker
             // 
+            this.AutoLog = false;
             this.CanHandlePowerEvent = true;
             this.CanShutdown = true;
             this.ServiceName = "MandayChecker";
