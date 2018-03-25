@@ -19,10 +19,28 @@ namespace mandaychecker
 
         protected override void OnStart(string[] args)
         {
+            this.AutoLog = false;
+            if (!EventLog.SourceExists("MySource"))
+            {
+                EventLog.CreateEventSource( "MySource", "MyLog");
+            }
+            EventLog eventLog1 = new EventLog();
+            eventLog1.Source = "MySource";
+            eventLog1.Log = "MyLog";
+            eventLog1.WriteEntry("OnStart");
         }
 
         protected override void OnStop()
         {
+            this.AutoLog = false;
+            if (!EventLog.SourceExists("MySource"))
+            {
+                EventLog.CreateEventSource( "MySource", "MyLog");
+            }
+            EventLog eventLog1 = new EventLog();
+            eventLog1.Source = "MySource";
+            eventLog1.Log = "MyLog";
+            eventLog1.WriteEntry("OnStop");
         }
 
         protected override void OnShutdown()
