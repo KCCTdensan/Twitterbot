@@ -24,5 +24,33 @@ namespace mandaychecker
         protected override void OnStop()
         {
         }
+
+        protected override void OnShutdown()
+        {
+            this.AutoLog = false;
+            if (!EventLog.SourceExists("MySource"))
+            {
+                EventLog.CreateEventSource( "MySource", "MyLog");
+            }
+            EventLog eventLog1 = new EventLog();
+            eventLog1.Source = "MySource";
+            eventLog1.Log = "MyLog";
+            eventLog1.WriteEntry("OnShutdown");
+
+        }
+
+        protected override bool OnPowerEvent(PowerBroadcastStatus powerStatus)
+        {
+            this.AutoLog = false;
+            if (!EventLog.SourceExists("MySource"))
+            {
+                EventLog.CreateEventSource( "MySource", "MyLog");
+            }
+            EventLog eventLog1 = new EventLog();
+            eventLog1.Source = "MySource";
+            eventLog1.Log = "MyLog";
+            eventLog1.WriteEntry(powerStatus.ToString());
+            return true;
+        }
     }
 }
