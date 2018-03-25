@@ -41,7 +41,7 @@ namespace mandaychecker
 
         protected override void OnShutdown()
         {
-            eventLog.WriteEntry("シャッドダウンで作業終了しました " +(startdate- DateTime.Now).TotalHours+ "人時");
+            eventLog.WriteEntry("シャットダウンで作業終了しました " +(startdate- DateTime.Now).TotalHours+ "人時");
         }
 
         protected override bool OnPowerEvent(PowerBroadcastStatus powerStatus)
