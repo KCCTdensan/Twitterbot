@@ -17,21 +17,32 @@ namespace mandaychecker
             InitializeComponent();
         }
 
-        EventLog eventLog = new EventLog();
+        EventLog eventLog;
 
         DateTime startdate;
 
-        protected override void OnStart(string[] args)
+        void start_working()
         {
-            if (!EventLog.SourceExists("MandayChecker"))
-            {
-                EventLog.CreateEventSource("MandayChecker", "MandayChecker");
-            }
-            eventLog.Source = "MandayChecker";
-            eventLog.Log = "MandayChecker";
-
             startdate = DateTime.Now;
             eventLog.WriteEntry("作業を開始しました");
+        }
+
+        void stop_working()
+        {
+            eventLog.WriteEntry("作業を終了しました " + (DateTime.Now-startdate).TotalHours + "人時");
+        }
+
+        protected override void OnStart(string[] args)
+        {
+            if (!EventLog.SourceExists("MandayCheckerSource"))
+            {
+                EventLog.CreateEventSource("MandayCheckerSource", "MandayCheckerLog");
+            }
+            eventLog = new EventLog();
+            eventLog.Source = "MandayCheckerSource";
+            eventLog.Log = "MandayCheckerLog";
+
+            start_working();
         }
 
         protected override void OnStop()
@@ -41,13 +52,22 @@ namespace mandaychecker
 
         protected override void OnShutdown()
         {
-            eventLog.WriteEntry("シャットダウンで作業終了しました " +(startdate- DateTime.Now).TotalHours+ "人時");
+            stop_working();
         }
 
         protected override bool OnPowerEvent(PowerBroadcastStatus powerStatus)
         {
-            eventLog.WriteEntry(powerStatus.ToString()  + "しました");
-            return true;
+            eventLog.WriteEntry(powerStatus.ToString() + "しました");
+            switch (powerStatus)
+            {
+                case PowerBroadcastStatus.ResumeSuspend:
+                    start_working();
+                    break;
+                case PowerBroadcastStatus.Suspend:
+                    stop_working();
+                    break;
+            }
+            return true;//今起きているイベントを続行
         }
     }
 }
