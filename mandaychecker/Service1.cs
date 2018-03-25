@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace mandaychecker
 {
-    public partial class Service1 : ServiceBase
+    public partial class mandaychecker : ServiceBase
     {
-        public Service1()
+        public mandaychecker()
         {
             InitializeComponent();
         }

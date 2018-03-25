@@ -1,6 +1,6 @@
 ﻿namespace mandaychecker
 {
-    partial class Service1
+    partial class mandaychecker
     {
         /// <summary> 
         /// 必要なデザイナー変数です。
@@ -28,8 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            this.ServiceName = "Service1";
+            // 
+            // mandaychecker
+            // 
+            this.CanHandlePowerEvent = true;
+            this.CanShutdown = true;
+            this.ServiceName = "MandayChecker";
+
         }
 
         #endregion
