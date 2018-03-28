@@ -7,6 +7,7 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net.Sockets;
 
 namespace mandaychecker
 {
@@ -29,7 +30,15 @@ namespace mandaychecker
 
         void stop_working()
         {
-            eventLog.WriteEntry("作業を終了しました " + (DateTime.Now-startdate).TotalHours + "人時");
+
+            string working_time_str=(DateTime.Now-startdate).TotalHours.ToString() ;
+            eventLog.WriteEntry("作業を終了しました " +working_time_str + "人時");
+            using (TcpClient report_client=new TcpClient("192.168.11.11",50000))
+            {
+                //時間をバイナリで送ってもいいけど可読性重視で文字として
+                Byte[] working_time_bytes=System.Text.Encoding.ASCII.GetBytes(working_time_str);
+                report_client.GetStream().Write(working_time_bytes,0,working_time_bytes.Length);
+            }
         }
 
         protected override void OnStart(string[] args)
